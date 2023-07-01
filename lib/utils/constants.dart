@@ -1,4 +1,4 @@
-const String currency = '৳';
+const String currency = '₹';
 const String busTypeNonAc = 'NON-AC';
 const String busTypeACEconomy = 'AC-ECONOMY';
 const String busTypeACBusiness = 'AC-BUSINESS';
@@ -23,13 +23,13 @@ const String routeNameReservationPage = 'reservation';
 
 
 const cities = [
-  'Dhaka',
-  'Chittagong',
-  'Sylhet',
-  'Bandarban',
-  'Rajshahi',
-  'Khagrachari',
-  'Rangamati',
+  'Thiruvananthapuram',
+  'Kochi',
+  'Kozhikode',
+  'Thrissur',
+  'Kannur',
+  'Kollam',
+  'Palakkad',
 ];
 
 enum ResponseStatus {

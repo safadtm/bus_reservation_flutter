@@ -1,16 +1,16 @@
-# bus_reservation_udemy
+# Bus Ticket Booking App
 
-A new Flutter project.
+This is the repository for the Bus Ticket Booking App, developed using Flutter and Spring Boot. The app allows users to search for bus routes, select schedules, choose seats, and submit reservations. It also includes an admin panel for managing buses, routes, and schedules.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+- User Features:
+  - Search for bus routes based on source and destination.
+  - View available schedules for selected routes.
+  - Select seats and make reservations.
+  - View reservation details and ticket information.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Admin Features:
+  - Authenticate using admin credentials.
+  - Add, update, and delete buses.
+  - Manage bus routes and schedules.
