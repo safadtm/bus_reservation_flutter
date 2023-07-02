@@ -1,3 +1,4 @@
+import 'package:bus_reservation_udemy/datasource/temp_db.dart';
 import 'package:bus_reservation_udemy/utils/constants.dart';
 import 'package:bus_reservation_udemy/utils/helper_functions.dart';
 import 'package:flutter/material.dart';
@@ -123,10 +124,18 @@ class _SearchPageState extends State<SearchPage> {
 
   void _search() {
     if (departureDate == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Please select a departure date")));
+      showMsg(context, emptyDateErrMessage);
       return;
     }
-    if (_formKey.currentState!.validate()) {}
+    if (_formKey.currentState!.validate()) {
+      try {
+        final route = TempDB.tableRoute.firstWhere(
+          (element) => element.cityFrom == fromCity && element.cityTo == toCity,
+        );
+        showMsg(context, route.routeName);
+      } on StateError catch (error) {
+        showMsg(context, 'No route found');
+      }
+    }
   }
 }
