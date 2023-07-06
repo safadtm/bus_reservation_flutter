@@ -130,9 +130,15 @@ class _SearchPageState extends State<SearchPage> {
       return;
     }
     if (_formKey.currentState!.validate()) {
-      Provider.of<AppDataProvider>(context,listen: false)
+      Provider.of<AppDataProvider>(context, listen: false)
           .getRouteByCityFromAndCityTo(fromCity!, toCity!)
-          .then((route) {});
+          .then((route) {
+        Navigator.pushNamed(
+          context,
+          routeNameSearchResultPage,
+          arguments: [route, getFormattedDate(departureDate!)],
+        );
+      });
     }
   }
 }
