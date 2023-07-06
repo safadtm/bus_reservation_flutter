@@ -15,8 +15,7 @@ class AppDataProvider extends ChangeNotifier {
     return _dataSource.getRouteByCityFromAndCityTo(cityFrom, cityTo);
   }
 
-  void getScheduleByRouteName(String routeName) async {
-   _scheduleList= await _dataSource.getSchedulesByRouteName(routeName);
-    notifyListeners();
+ Future<List<BusSchedule>>  getScheduleByRouteName(String routeName) async {
+   return _dataSource.getSchedulesByRouteName(routeName);
   }
 }
