@@ -64,50 +64,57 @@ class ScheduleItemview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ListTile(
-            title: Text(schedule.bus.busName),
-            subtitle: Text(schedule.bus.busType),
-            trailing: Text(
-              '$currency${schedule.ticketPrice}',
+    return InkWell(
+      onTap: () => Navigator.pushNamed(
+        context,
+        routeNameSeatPlanPage,
+        arguments: [schedule, date],
+      ),
+      child: Card(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ListTile(
+              title: Text(schedule.bus.busName),
+              subtitle: Text(schedule.bus.busType),
+              trailing: Text(
+                '$currency${schedule.ticketPrice}',
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text(
-                  "From: ${schedule.busRoute.cityFrom}",
-                  style:const TextStyle(fontSize: 17),
-                ),
-                 Text(
-                  "To: ${schedule.busRoute.cityTo}",
-                  style:const TextStyle(fontSize: 17),
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(
+                    "From: ${schedule.busRoute.cityFrom}",
+                    style: const TextStyle(fontSize: 17),
+                  ),
+                  Text(
+                    "To: ${schedule.busRoute.cityTo}",
+                    style: const TextStyle(fontSize: 17),
+                  ),
+                ],
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text(
-                  "Departure Time: ${schedule.departureTime}",
-                  style:const TextStyle(fontSize: 17),
-                ),
-                 Text(
-                  "Total Seat: ${schedule.bus.totalSeat}",
-                  style:const TextStyle(fontSize: 17),
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(
+                    "Departure Time: ${schedule.departureTime}",
+                    style: const TextStyle(fontSize: 17),
+                  ),
+                  Text(
+                    "Total Seat: ${schedule.bus.totalSeat}",
+                    style: const TextStyle(fontSize: 17),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
