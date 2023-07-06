@@ -1,7 +1,9 @@
 import 'package:bus_reservation_udemy/datasource/temp_db.dart';
+import 'package:bus_reservation_udemy/providers/app_data_provider.dart';
 import 'package:bus_reservation_udemy/utils/constants.dart';
 import 'package:bus_reservation_udemy/utils/helper_functions.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -128,14 +130,9 @@ class _SearchPageState extends State<SearchPage> {
       return;
     }
     if (_formKey.currentState!.validate()) {
-      try {
-        final route = TempDB.tableRoute.firstWhere(
-          (element) => element.cityFrom == fromCity && element.cityTo == toCity,
-        );
-        showMsg(context, route.routeName);
-      } on StateError catch (error) {
-        showMsg(context, 'No route found');
-      }
+      Provider.of<AppDataProvider>(context,listen: false)
+          .getRouteByCityFromAndCityTo(fromCity!, toCity!)
+          .then((route) {});
     }
   }
 }
