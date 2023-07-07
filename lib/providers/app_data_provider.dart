@@ -5,12 +5,17 @@ import 'package:bus_reservation_udemy/models/but_route.dart';
 import 'package:flutter/material.dart';
 
 import '../models/bus_reservation.dart';
+import '../models/response_model.dart';
 
 class AppDataProvider extends ChangeNotifier {
   List<BusSchedule> _scheduleList = [];
   List<BusSchedule> get scheduleList => _scheduleList;
 
   final DataSource _dataSource = DummyDataSource();
+
+  Future<ResponseModel> addReservation(BusReservation reservation) async {
+    return _dataSource.addReservation(reservation);
+  }
 
   Future<BusRoute?> getRouteByCityFromAndCityTo(
       String cityFrom, String cityTo) {

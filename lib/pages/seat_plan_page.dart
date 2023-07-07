@@ -37,6 +37,9 @@ class _SeatPlanPageState extends State<SeatPlanPage> {
     final resList = await Provider.of<AppDataProvider>(context, listen: false)
         .getReservationsByScheduleAndDepartureDate(
             schedule.scheduleId!, departureDate);
+    setState(() {
+      isDataLoading = false;
+    });
     List<String> seats = [];
     for (final res in resList) {
       totalSeatBooked += res.totalSeatBooked;
@@ -101,24 +104,26 @@ class _SeatPlanPageState extends State<SeatPlanPage> {
                 style: const TextStyle(fontSize: 16),
               ),
             ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: SeatPlanView(
-                  totalSeat: schedule.bus.totalSeat,
-                  bookedSeatNumbers: bookedSeatNumbers,
-                  totalSeatBooked: totalSeatBooked,
-                  isBusinessClass: schedule.bus.busType == busTypeACBusiness,
-                  onSeatSelected: (value, seat) {
-                    if (value) {
-                      selectedSeats.add(seat);
-                    } else {
-                      selectedSeats.remove(seat);
-                    }
-                    selectedSeatStringNotifier.value = selectedSeats.join(',');
-                  },
+            if (!isDataLoading)
+              Expanded(
+                child: SingleChildScrollView(
+                  child: SeatPlanView(
+                    totalSeat: schedule.bus.totalSeat,
+                    bookedSeatNumbers: bookedSeatNumbers,
+                    totalSeatBooked: totalSeatBooked,
+                    isBusinessClass: schedule.bus.busType == busTypeACBusiness,
+                    onSeatSelected: (value, seat) {
+                      if (value) {
+                        selectedSeats.add(seat);
+                      } else {
+                        selectedSeats.remove(seat);
+                      }
+                      selectedSeatStringNotifier.value =
+                          selectedSeats.join(',');
+                    },
+                  ),
                 ),
               ),
-            ),
             OutlinedButton(
               onPressed: () {
                 if (selectedSeats.isEmpty) {
