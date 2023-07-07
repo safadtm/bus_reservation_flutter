@@ -88,12 +88,17 @@ class _SeatPlanPageState extends State<SeatPlanPage> {
             Expanded(
               child: SingleChildScrollView(
                 child: SeatPlanView(
-                  totalSeat:schedule.bus.totalSeat ,
+                  totalSeat: schedule.bus.totalSeat,
                   bookedSeatNumbers: bookedSeatNumbers,
                   totalSeatBooked: totalSeatBooked,
-                  isBusinessClass: schedule.bus.busType==busTypeACBusiness,
+                  isBusinessClass: schedule.bus.busType == busTypeACBusiness,
                   onSeatSelected: (value, seat) {
-                    
+                    if (value) {
+                      selectedSeats.add(seat);
+                    } else {
+                      selectedSeats.remove(seat);
+                    }
+                    selectedSeatStringNotifier.value = selectedSeats.join(',');
                   },
                 ),
               ),
