@@ -25,6 +25,11 @@ class AppDataProvider extends ChangeNotifier {
     return _dataSource.addReservation(reservation);
   }
 
+  Future<void> getAllReservations() async {
+    _reservationList = await _dataSource.getAllReservation();
+    notifyListeners();
+  }
+
   Future<BusRoute?> getRouteByCityFromAndCityTo(
       String cityFrom, String cityTo) {
     return _dataSource.getRouteByCityFromAndCityTo(cityFrom, cityTo);

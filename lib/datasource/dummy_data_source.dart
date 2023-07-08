@@ -17,7 +17,7 @@ class DummyDataSource extends DataSource {
   }
 
   @override
-  Future<ResponseModel> addReservation(BusReservation reservation) async{
+  Future<ResponseModel> addReservation(BusReservation reservation) async {
     TempDB.tableReservation.add(reservation);
     return ResponseModel(
       responseStatus: ResponseStatus.SAVED,
@@ -46,9 +46,8 @@ class DummyDataSource extends DataSource {
   }
 
   @override
-  Future<List<BusReservation>> getAllReservation() {
-    // TODO: implement getAllReservation
-    throw UnimplementedError();
+  Future<List<BusReservation>> getAllReservation() async {
+    return TempDB.tableReservation;
   }
 
   @override
