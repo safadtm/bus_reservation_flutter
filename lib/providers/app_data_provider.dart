@@ -29,6 +29,20 @@ class AppDataProvider extends ChangeNotifier {
     return _dataSource.addRoute(busRoute);
   }
 
+  Future<ResponseModel> addSchedule(BusSchedule busSchedule) {
+    return _dataSource.addSchedule(busSchedule);
+  }
+
+  void getAllBus() async {
+    _busList = await _dataSource.getAllBus();
+    notifyListeners();
+  }
+
+  void getAllRoutes() async {
+    _routeList = await _dataSource.getAllRoutes();
+    notifyListeners();
+  }
+
   Future<ResponseModel> addReservation(BusReservation reservation) {
     return _dataSource.addReservation(reservation);
   }

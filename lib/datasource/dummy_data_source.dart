@@ -11,7 +11,7 @@ import '../models/response_model.dart';
 
 class DummyDataSource extends DataSource {
   @override
-  Future<ResponseModel> addBus(Bus bus)async {
+  Future<ResponseModel> addBus(Bus bus) async {
     TempDB.tableBus.add(bus);
     return ResponseModel(
       responseStatus: ResponseStatus.SAVED,
@@ -33,8 +33,8 @@ class DummyDataSource extends DataSource {
   }
 
   @override
-  Future<ResponseModel> addRoute(BusRoute busRoute)async {
-  TempDB.tableRoute.add(busRoute);
+  Future<ResponseModel> addRoute(BusRoute busRoute) async {
+    TempDB.tableRoute.add(busRoute);
     return ResponseModel(
       responseStatus: ResponseStatus.SAVED,
       statusCode: 200,
@@ -44,15 +44,19 @@ class DummyDataSource extends DataSource {
   }
 
   @override
-  Future<ResponseModel> addSchedule(BusSchedule busSchedule) {
-    // TODO: implement addSchedule
-    throw UnimplementedError();
+  Future<ResponseModel> addSchedule(BusSchedule busSchedule) async{
+   TempDB.tableSchedule.add(busSchedule);
+    return ResponseModel(
+      responseStatus: ResponseStatus.SAVED,
+      statusCode: 200,
+      message: 'Schedule Saved',
+      object: {},
+    );
   }
 
   @override
-  Future<List<Bus>> getAllBus() {
-    // TODO: implement getAllBus
-    throw UnimplementedError();
+  Future<List<Bus>> getAllBus() async {
+    return TempDB.tableBus;
   }
 
   @override
@@ -61,9 +65,8 @@ class DummyDataSource extends DataSource {
   }
 
   @override
-  Future<List<BusRoute>> getAllRoutes() {
-    // TODO: implement getAllRoutes
-    throw UnimplementedError();
+  Future<List<BusRoute>> getAllRoutes() async {
+    return TempDB.tableRoute;
   }
 
   @override
