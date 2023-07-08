@@ -1,10 +1,12 @@
 import 'package:bus_reservation_udemy/models/reservation_expansion_item.dart';
 import 'package:bus_reservation_udemy/providers/app_data_provider.dart';
+import 'package:bus_reservation_udemy/utils/helper_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../customwidgets/reservation_item_body_view.dart';
 import '../customwidgets/reservation_item_header_view.dart';
+import '../customwidgets/search_box_view.dart';
 
 class ReservationPage extends StatefulWidget {
   const ReservationPage({Key? key}) : super(key: key);
@@ -25,10 +27,11 @@ class _ReservationPageState extends State<ReservationPage> {
   }
 
   _getData() async {
-  final appDataProvider = Provider.of<AppDataProvider>(context, listen: false);
-    await appDataProvider.getAllReservations();
+    final appDataProvider =
+        Provider.of<AppDataProvider>(context, listen: false);
+   final reservations= await appDataProvider.getAllReservations();
     setState(() {
-      items = appDataProvider.getExapansionItems();
+      items = appDataProvider.getExapansionItems(reservations);
     });
   }
 
@@ -41,6 +44,11 @@ class _ReservationPageState extends State<ReservationPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            SearchBoxView(
+              onSubmit: (value) {
+                _search(value);
+              },
+            ),
             ExpansionPanelList(
               expansionCallback: (index, isExpanded) {
                 setState(() {
@@ -62,5 +70,18 @@ class _ReservationPageState extends State<ReservationPage> {
         ),
       ),
     );
+  }
+
+  void _search(String value) async {
+    final data = await Provider.of<AppDataProvider>(context, listen: false)
+        .getReservationsByMobile(value);
+    if (data.isEmpty) {
+      showMsg(context, 'No record found');
+      return;
+    }
+    setState(() {
+      items = Provider.of<AppDataProvider>(context, listen: false)
+          .getExapansionItems(data);
+    });
   }
 }
