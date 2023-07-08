@@ -1,8 +1,11 @@
 import 'package:bus_reservation_udemy/datasource/temp_db.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../models/but_route.dart';
+import '../providers/app_data_provider.dart';
 import '../utils/constants.dart';
+import '../utils/helper_functions.dart';
 
 class AddRoutePage extends StatefulWidget {
   const AddRoutePage({Key? key}) : super(key: key);
@@ -39,9 +42,9 @@ class _AddRoutePageState extends State<AddRoutePage> {
                 hint: const Text('From'),
                 items: cities
                     .map((e) => DropdownMenuItem<String>(
-                  value: e,
-                  child: Text(e),
-                ))
+                          value: e,
+                          child: Text(e),
+                        ))
                     .toList(),
               ),
               const SizedBox(
@@ -58,9 +61,9 @@ class _AddRoutePageState extends State<AddRoutePage> {
                 hint: const Text('To'),
                 items: cities
                     .map((e) => DropdownMenuItem<String>(
-                  value: e,
-                  child: Text(e),
-                ))
+                          value: e,
+                          child: Text(e),
+                        ))
                     .toList(),
               ),
               const SizedBox(
@@ -102,15 +105,24 @@ class _AddRoutePageState extends State<AddRoutePage> {
 
   void addRoute() {
     if (_formKey.currentState!.validate()) {
-      final route = BusRoute(
+      final busRoute = BusRoute(
         routeId: TempDB.tableRoute.length + 1,
         routeName: '$from-$to',
         cityFrom: from!,
         cityTo: to!,
         distanceInKm: double.parse(distanceController.text),
       );
+      Provider.of<AppDataProvider>(context, listen: false)
+          .addRoute(busRoute)
+          .then((response) {
+        if (response.responseStatus == ResponseStatus.SAVED) {
+          showMsg(context, response.message);
+          resetFields();
+        }
+      });
     }
   }
+
   @override
   void dispose() {
     distanceController.dispose();
@@ -118,6 +130,8 @@ class _AddRoutePageState extends State<AddRoutePage> {
   }
 
   void resetFields() {
+    from = null;
+    to=null;
     distanceController.clear();
   }
 }

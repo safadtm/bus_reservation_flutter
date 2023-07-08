@@ -1,5 +1,8 @@
 import 'package:bus_reservation_udemy/datasource/temp_db.dart';
+import 'package:bus_reservation_udemy/providers/app_data_provider.dart';
+import 'package:bus_reservation_udemy/utils/helper_functions.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../models/bus_model.dart';
 import '../utils/constants.dart';
@@ -135,10 +138,19 @@ class _AddBusPageState extends State<AddBusPage> {
         busType: busType!,
         totalSeat: int.parse(seatController.text),
       );
+      Provider.of<AppDataProvider>(context, listen: false)
+          .addBus(bus)
+          .then((response) {
+        if (response.responseStatus == ResponseStatus.SAVED) {
+          showMsg(context, response.message);
+          resetFields();
+        }
+      });
     }
   }
 
   void resetFields() {
+    busType = null; 
     numberController.clear();
     seatController.clear();
     nameController.clear();
