@@ -95,7 +95,7 @@ class DummyDataSource extends DataSource {
   @override
   Future<BusRoute?> getRouteByCityFromAndCityTo(
       String cityFrom, String cityTo) async {
-    BusRoute? route;
+    // BusRoute? route;
     try {
       final route = TempDB.tableRoute.firstWhere(
         (element) => element.cityFrom == cityFrom && element.cityTo == cityTo,
@@ -108,7 +108,6 @@ class DummyDataSource extends DataSource {
 
   @override
   Future<BusRoute?> getRouteByRouteName(String routeName) {
-    // TODO: implement getRouteByRouteName
     throw UnimplementedError();
   }
 
