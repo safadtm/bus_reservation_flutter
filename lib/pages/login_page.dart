@@ -1,4 +1,8 @@
+import 'package:bus_reservation_udemy/models/app_user.dart';
+import 'package:bus_reservation_udemy/providers/app_data_provider.dart';
+import 'package:bus_reservation_udemy/utils/helper_functions.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -12,8 +16,8 @@ class _LoginPageState extends State<LoginPage> {
   bool isObscure = true;
   final _userNameController = TextEditingController();
   final _passwordController = TextEditingController();
- 
- @override
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -28,19 +32,22 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(32.0),
-                child: Text('Admin Login', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline4,),
+                child: Text(
+                  'Admin Login',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headline4,
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: TextFormField(
                   controller: _userNameController,
                   decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.person_2_outlined),
+                      prefixIcon: Icon(Icons.person_2_outlined),
                       filled: true,
-                      labelText: 'Username'
-                  ),
+                      labelText: 'Username'),
                   validator: (value) {
-                    if(value == null || value.isEmpty) {
+                    if (value == null || value.isEmpty) {
                       return 'This field must not be empty';
                     }
                     return null;
@@ -56,24 +63,27 @@ class _LoginPageState extends State<LoginPage> {
                       prefixIcon: const Icon(Icons.lock),
                       filled: true,
                       labelText: 'Password',
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          isObscure = !isObscure;
-                        });
-                      },
-                      icon: Icon(isObscure ? Icons.visibility_off : Icons.visibility),
-                    )
-                  ),
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            isObscure = !isObscure;
+                          });
+                        },
+                        icon: Icon(isObscure
+                            ? Icons.visibility_off
+                            : Icons.visibility),
+                      )),
                   validator: (value) {
-                    if(value == null || value.isEmpty) {
+                    if (value == null || value.isEmpty) {
                       return 'This field must not be empty';
                     }
                     return null;
                   },
                 ),
               ),
-              const SizedBox(height: 20,),
+              const SizedBox(
+                height: 20,
+              ),
               Center(
                 child: SizedBox(
                   width: 100,
@@ -90,10 +100,21 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
   void _login() async {
     if (_formKey.currentState!.validate()) {
       final userName = _userNameController.text;
       final password = _passwordController.text;
+
+      final response =
+          await Provider.of<AppDataProvider>(context, listen: false)
+              .login(AppUser(userName: userName, password: password));
+      if (response != null) {
+        showMsg(context, response.message);
+        Navigator.pop(context);
+      } else {
+        showMsg(context, "Login failed");
+      }
     }
   }
 }

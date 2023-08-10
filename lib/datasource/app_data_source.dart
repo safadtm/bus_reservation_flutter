@@ -107,9 +107,11 @@ class AppDataSource extends DataSource {
       );
 
       final map = json.decode(response.body);
+      print(map);
       final authResponseModel = AuthResponseModel.fromJson(map);
       return authResponseModel;
     } catch (error) {
+      print(error.toString());
       return null;
     }
   }
