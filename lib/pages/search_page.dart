@@ -134,11 +134,12 @@ class _SearchPageState extends State<SearchPage> {
       Provider.of<AppDataProvider>(context, listen: false)
           .getRouteByCityFromAndCityTo(fromCity!, toCity!)
           .then((route) {
-        Navigator.pushNamed(
-          context,
-          routeNameSearchResultPage,
-          arguments: [route, getFormattedDate(departureDate!)],
-        );
+        if (route != null) {
+          Navigator.pushNamed(context, routeNameSearchResultPage,
+              arguments: [route, getFormattedDate(departureDate!)]);
+        } else {
+          showMsg(context, 'Could not find any route');
+        }
       });
     }
   }

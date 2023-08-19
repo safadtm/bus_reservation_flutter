@@ -72,7 +72,7 @@ class AppDataSource extends DataSource {
   }
 
   @override
-  Future<ResponseModel> addSchedule(BusSchedule busSchedule) async{
+  Future<ResponseModel> addSchedule(BusSchedule busSchedule) async {
     final url = "$baseUrl${'schedule/add'}";
 
     try {
@@ -115,7 +115,7 @@ class AppDataSource extends DataSource {
   }
 
   @override
-  Future<List<BusRoute>> getAllRoutes()async {
+  Future<List<BusRoute>> getAllRoutes() async {
     final url = '$baseUrl${"route/all"}';
     try {
       final response = await http.get(Uri.parse(url));
@@ -151,9 +151,18 @@ class AppDataSource extends DataSource {
 
   @override
   Future<BusRoute?> getRouteByCityFromAndCityTo(
-      String cityFrom, String cityTo) {
-    // TODO: implement getRouteByCityFromAndCityTo
-    throw UnimplementedError();
+      String cityFrom, String cityTo) async {
+    final url = '$baseUrl${"route/query?cityFrom=$cityFrom&cityTo=$cityTo"}';
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final map = json.decode(response.body);
+        return BusRoute.fromJson(map);
+      }
+      return null;
+    } catch (error) {
+      rethrow;
+    }
   }
 
   @override
@@ -163,9 +172,19 @@ class AppDataSource extends DataSource {
   }
 
   @override
-  Future<List<BusSchedule>> getSchedulesByRouteName(String routeName) {
-    // TODO: implement getSchedulesByRouteName
-    throw UnimplementedError();
+  Future<List<BusSchedule>> getSchedulesByRouteName(String routeName) async {
+    final url = '$baseUrl${"schedule/$routeName"}';
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final mapList = json.decode(response.body) as List;
+        return List.generate(
+            mapList.length, (index) => BusSchedule.fromJson(mapList[index]));
+      }
+      return [];
+    } catch (error) {
+      rethrow;
+    }
   }
 
   @override
