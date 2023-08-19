@@ -39,6 +39,8 @@ dependencies:
   provider: 
   http:
   shared_preferences: 
+  freezed_annotation:
+  json_annotation: 
 
 dev_dependencies:
   flutter_test:
@@ -50,7 +52,9 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
-
+  build_runner: 
+  freezed: 
+  json_serializable: 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

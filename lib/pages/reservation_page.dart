@@ -16,7 +16,7 @@ class ReservationPage extends StatefulWidget {
 }
 
 class _ReservationPageState extends State<ReservationPage> {
-  List<ReservationExapansionItem> items = [];
+  List<ReservationExpansionItem> items = [];
   bool isFirst = true;
   @override
   void didChangeDependencies() {

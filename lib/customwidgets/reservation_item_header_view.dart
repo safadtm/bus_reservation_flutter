@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:bus_reservation_udemy/models/reservation_expansion_item.dart';
 
 class ReservationItemHeaderView extends StatelessWidget {
-  final ReservationExapansionHeader header;
+  final ReservationExpansionHeader header;
   const ReservationItemHeaderView({
     Key? key,
     required this.header,
@@ -16,7 +16,7 @@ class ReservationItemHeaderView extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ListTile(
-        title: Text('${header.departuredate} ${header.schedule.departureTime}'),
+        title: Text('${header.departureDate} ${header.schedule.departureTime}'),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../datasource/temp_db.dart';
 import '../models/bus_model.dart';
 import '../models/bus_schedule.dart';
-import '../models/but_route.dart';
+import '../models/bus_route.dart';
 import '../providers/app_data_provider.dart';
 import '../utils/constants.dart';
 import '../utils/helper_functions.dart';

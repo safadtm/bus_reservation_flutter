@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/bus_schedule.dart';
-import '../models/but_route.dart';
+import '../models/bus_route.dart';
 import '../providers/app_data_provider.dart';
 import '../utils/constants.dart';
 
