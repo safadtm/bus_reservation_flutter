@@ -51,8 +51,8 @@ class AppDataSource extends DataSource {
   }
 
   @override
-  Future<ResponseModel> addRoute(BusRoute busRoute)async {
-   final url = "$baseUrl${'route/add'}";
+  Future<ResponseModel> addRoute(BusRoute busRoute) async {
+    final url = "$baseUrl${'route/add'}";
 
     try {
       final response = await http.post(
@@ -72,15 +72,40 @@ class AppDataSource extends DataSource {
   }
 
   @override
-  Future<ResponseModel> addSchedule(BusSchedule busSchedule) {
-    // TODO: implement addSchedule
-    throw UnimplementedError();
+  Future<ResponseModel> addSchedule(BusSchedule busSchedule) async{
+    final url = "$baseUrl${'schedule/add'}";
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: await authHeader,
+        body: json.encode(busSchedule.toJson()),
+      );
+
+      final map = json.decode(response.body);
+      print(map);
+
+      return await _getResponseModel(response);
+    } catch (error) {
+      print(error.toString());
+      rethrow;
+    }
   }
 
   @override
-  Future<List<Bus>> getAllBus() {
-    // TODO: implement getAllBus
-    throw UnimplementedError();
+  Future<List<Bus>> getAllBus() async {
+    final url = '$baseUrl${"bus/all"}';
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final mapList = json.decode(response.body) as List;
+        return List.generate(
+            mapList.length, (index) => Bus.fromJson(mapList[index]));
+      }
+      return [];
+    } catch (error) {
+      rethrow;
+    }
   }
 
   @override
@@ -90,9 +115,19 @@ class AppDataSource extends DataSource {
   }
 
   @override
-  Future<List<BusRoute>> getAllRoutes() {
-    // TODO: implement getAllRoutes
-    throw UnimplementedError();
+  Future<List<BusRoute>> getAllRoutes()async {
+    final url = '$baseUrl${"route/all"}';
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final mapList = json.decode(response.body) as List;
+        return List.generate(
+            mapList.length, (index) => BusRoute.fromJson(mapList[index]));
+      }
+      return [];
+    } catch (error) {
+      rethrow;
+    }
   }
 
   @override
