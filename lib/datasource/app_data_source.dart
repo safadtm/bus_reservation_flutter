@@ -108,8 +108,19 @@ class AppDataSource extends DataSource {
   }
 
   @override
-  Future<List<BusReservation>> getAllReservation() {
-    throw UnimplementedError();
+  Future<List<BusReservation>> getAllReservation() async{
+   final url = '$baseUrl${"reservation/all"}';
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final mapList = json.decode(response.body) as List;
+        return List.generate(
+            mapList.length, (index) => BusReservation.fromJson(mapList[index]));
+      }
+      return [];
+    } catch (error) {
+      rethrow;
+    }
   }
 
   @override
@@ -134,9 +145,20 @@ class AppDataSource extends DataSource {
   }
 
   @override
-  Future<List<BusReservation>> getReservationsByMobile(String mobile) {
-    throw UnimplementedError();
-  }
+  Future<List<BusReservation>> getReservationsByMobile(String mobile)async {
+final url =
+        '$baseUrl${"reservation/all/$mobile"}';
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final mapList = json.decode(response.body) as List;
+        return List.generate(
+            mapList.length, (index) => BusReservation.fromJson(mapList[index]));
+      }
+      return [];
+    } catch (error) {
+      rethrow;
+    }  }
 
   @override
   Future<List<BusReservation>> getReservationsByScheduleAndDepartureDate(
