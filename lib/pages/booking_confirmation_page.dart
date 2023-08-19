@@ -126,7 +126,7 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
             const Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(
-                'Booking Summery',
+                'Booking Summary',
                 style: TextStyle(fontSize: 16),
               ),
             ),

@@ -34,20 +34,27 @@ class AppDataSource extends DataSource {
         body: json.encode(bus.toJson()),
       );
 
-      final map = json.decode(response.body);
-      print(map);
-
       return await _getResponseModel(response);
     } catch (error) {
-      print(error.toString());
       rethrow;
     }
   }
 
   @override
-  Future<ResponseModel> addReservation(BusReservation reservation) {
-    // TODO: implement addReservation
-    throw UnimplementedError();
+  Future<ResponseModel> addReservation(BusReservation reservation) async {
+    final url = "$baseUrl${'reservation/add'}";
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: header,
+        body: json.encode(reservation.toJson()),
+      );
+
+      return await _getResponseModel(response);
+    } catch (error) {
+      rethrow;
+    }
   }
 
   @override
@@ -61,12 +68,8 @@ class AppDataSource extends DataSource {
         body: json.encode(busRoute.toJson()),
       );
 
-      final map = json.decode(response.body);
-      print(map);
-
       return await _getResponseModel(response);
     } catch (error) {
-      print(error.toString());
       rethrow;
     }
   }
@@ -82,12 +85,8 @@ class AppDataSource extends DataSource {
         body: json.encode(busSchedule.toJson()),
       );
 
-      final map = json.decode(response.body);
-      print(map);
-
       return await _getResponseModel(response);
     } catch (error) {
-      print(error.toString());
       rethrow;
     }
   }
@@ -110,7 +109,6 @@ class AppDataSource extends DataSource {
 
   @override
   Future<List<BusReservation>> getAllReservation() {
-    // TODO: implement getAllReservation
     throw UnimplementedError();
   }
 
@@ -132,20 +130,19 @@ class AppDataSource extends DataSource {
 
   @override
   Future<List<BusSchedule>> getAllSchedules() {
-    // TODO: implement getAllSchedules
     throw UnimplementedError();
   }
 
   @override
   Future<List<BusReservation>> getReservationsByMobile(String mobile) {
-    // TODO: implement getReservationsByMobile
     throw UnimplementedError();
   }
 
   @override
   Future<List<BusReservation>> getReservationsByScheduleAndDepartureDate(
-      int scheduleId, String departureDate) async{
-   final url = '$baseUrl${"reservation/query?scheduleId=$scheduleId&departureDate=$departureDate"}';
+      int scheduleId, String departureDate) async {
+    final url =
+        '$baseUrl${"reservation/query?scheduleId=$scheduleId&departureDate=$departureDate"}';
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
@@ -177,7 +174,6 @@ class AppDataSource extends DataSource {
 
   @override
   Future<BusRoute?> getRouteByRouteName(String routeName) {
-    // TODO: implement getRouteByRouteName
     throw UnimplementedError();
   }
 
@@ -209,11 +205,9 @@ class AppDataSource extends DataSource {
       );
 
       final map = json.decode(response.body);
-      print(map);
       final authResponseModel = AuthResponseModel.fromJson(map);
       return authResponseModel;
     } catch (error) {
-      print(error.toString());
       return null;
     }
   }
