@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:bus_reservation_udemy/datasource/data_source.dart';
 import 'package:bus_reservation_udemy/models/app_user.dart';
@@ -7,18 +8,40 @@ import 'package:bus_reservation_udemy/models/bus_model.dart';
 import 'package:bus_reservation_udemy/models/bus_reservation.dart';
 import 'package:bus_reservation_udemy/models/bus_schedule.dart';
 import 'package:bus_reservation_udemy/models/bus_route.dart';
+import 'package:bus_reservation_udemy/models/error_details_model.dart';
 import 'package:bus_reservation_udemy/models/response_model.dart';
+import 'package:bus_reservation_udemy/utils/constants.dart';
+import 'package:bus_reservation_udemy/utils/helper_functions.dart';
 import 'package:http/http.dart' as http;
 
 class AppDataSource extends DataSource {
   final String baseUrl = "http://10.0.2.2:8080/api/";
 
   Map<String, String> get header => {'Content-Type': 'application/json'};
+  Future<Map<String, String>> get authHeader async => {
+        'Content-Type': 'application/json',
+        HttpHeaders.authorizationHeader: 'Bearer ${await getToken()}',
+      };
 
   @override
-  Future<ResponseModel> addBus(Bus bus) {
-    // TODO: implement addBus
-    throw UnimplementedError();
+  Future<ResponseModel> addBus(Bus bus) async {
+    final url = "$baseUrl${'bus/add'}";
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: await authHeader,
+        body: json.encode(bus.toJson()),
+      );
+
+      final map = json.decode(response.body);
+      print(map);
+
+      return await _getResponseModel(response);
+    } catch (error) {
+      print(error.toString());
+      rethrow;
+    }
   }
 
   @override
@@ -114,5 +137,36 @@ class AppDataSource extends DataSource {
       print(error.toString());
       return null;
     }
+  }
+
+  Future<ResponseModel> _getResponseModel(http.Response response) async {
+    ResponseStatus status = ResponseStatus.NONE;
+    ResponseModel responseModel = ResponseModel();
+    if (response.statusCode == 200) {
+      status = ResponseStatus.SAVED;
+      responseModel = ResponseModel.fromJson(jsonDecode(response.body));
+      responseModel.responseStatus = status;
+    } else if (response.statusCode == 401 || response.statusCode == 403) {
+      if (await hasTokenExpired()) {
+        status = ResponseStatus.EXPIRED;
+      } else {
+        status = ResponseStatus.UNAUTHORIZED;
+      }
+      responseModel = ResponseModel(
+        responseStatus: status,
+        statusCode: 401,
+        message: 'Access denied. Please login as Admin',
+      );
+    } else if (response.statusCode == 500 || response.statusCode == 400) {
+      final json = jsonDecode(response.body);
+      final errorDetails = ErrorDetails.fromJson(json);
+      status = ResponseStatus.FAILED;
+      responseModel = ResponseModel(
+        responseStatus: status,
+        statusCode: 500,
+        message: errorDetails.errorMessage,
+      );
+    }
+    return responseModel;
   }
 }
